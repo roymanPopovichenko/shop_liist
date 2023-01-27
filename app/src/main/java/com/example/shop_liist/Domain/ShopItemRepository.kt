@@ -1,5 +1,7 @@
 package com.example.shop_liist.Domain
 
+import androidx.lifecycle.LiveData
+
 interface ShopItemRepository {
 
     fun deleteShopItem(shopItem: ShopItem)
@@ -8,7 +10,7 @@ interface ShopItemRepository {
 
     fun getShopItem(id: Int): ShopItem
 
-    fun getShopList() : List<ShopItem>
+    fun getShopList() : LiveData<List<ShopItem>>
 
     fun insertShopItem(shopItem: ShopItem)
 
