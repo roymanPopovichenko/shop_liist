@@ -10,8 +10,15 @@ class ShopItemImpl: ShopItemRepository {
 
     private val shopListLD = MutableLiveData<List<ShopItem>>()
 
-    private val shopList = mutableListOf<ShopItem>()
+    private val shopList = sortedSetOf(Comparator<ShopItem> { p0, p1 -> p0.id.compareTo(p1.id) })
     private var generateShopItemId = 0
+
+    init {
+        for (i in 0 until 10) {
+            val shopItem = ShopItem("name$i", i, true)
+            insertShopItem(shopItem)
+        }
+    }
 
     override fun deleteShopItem(shopItem: ShopItem) {
         shopList.remove(shopItem)
