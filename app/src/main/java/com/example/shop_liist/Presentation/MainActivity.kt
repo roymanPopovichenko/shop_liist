@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         llShopList = findViewById(R.id.llShopList)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.shopList.observe(this, {
-
+            showList(it)
         })
     }
 
