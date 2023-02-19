@@ -14,7 +14,7 @@ class ShopItemImpl: ShopItemRepository {
     private var generateShopItemId = 0
 
     init {
-        for (i in 0 until 10) {
+        for (i in 0 until 102) {
             val shopItem = ShopItem("name$i", i, true)
             insertShopItem(shopItem)
         }
@@ -48,7 +48,7 @@ class ShopItemImpl: ShopItemRepository {
     }
 
     fun updateList() {
-        shopListLD.value = shopList.toList()
+        shopListLD.postValue(shopList.toList())
     }
 
 }
