@@ -1,21 +1,17 @@
 package com.example.shop_liist.Presentation
 
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shop_liist.Domain.ShopItem
-import com.example.shop_liist.Presentation.ShopListAdapter.ShopListViewHolder
 import com.example.shop_liist.R
 
-class ShopListAdapter : RecyclerView.Adapter<ShopListViewHolder>() {
-
-    var shopList = listOf<ShopItem>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+class ShopListAdapter() : ListAdapter<ShopItem, ShopListViewHolder>(ShopItemDiffCallback()){
 
     var onShopItemClickListener: ((ShopItem) -> Unit)? = null
     var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
@@ -31,7 +27,7 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ShopListViewHolder, position: Int) {
-        val shopItem = shopList[position]
+        val shopItem = getItem(position)
         holder.itemView.setOnLongClickListener({
             onShopItemLongClickListener?.invoke(shopItem)
             true
@@ -43,22 +39,13 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListViewHolder>() {
         holder.tvCount.text = shopItem.count.toString()
     }
 
-    override fun getItemCount(): Int {
-        return shopList.size
-    }
-
     override fun getItemViewType(position: Int): Int {
-        val item = shopList[position]
+        val item = getItem(position)
         return if (item.enable) {
             VIEW_TYPE_ENABLE
         } else {
             VIEW_TYPE_DISABLED
         }
-    }
-
-    class ShopListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvName = view.findViewById<TextView>(R.id.tv_name)
-        val tvCount = view.findViewById<TextView>(R.id.tv_count)
     }
 
     companion object {

@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         setupRecyclerView()
         viewModel.shopList.observe(this, {
-            shopListAdapter.shopList = it
+            shopListAdapter.submitList(it)
         })
     }
 
@@ -42,7 +42,11 @@ class MainActivity : AppCompatActivity() {
         )
         setupClickListener()
         setupLongClickListener()
-        val callback = object :  ItemTouchHelper.SimpleCallback(0, LEFT or RIGHT){
+        setupItemTouchHelper(rvShopList)
+    }
+
+    private fun setupItemTouchHelper(rvShopList: RecyclerView) {
+        val callback = object : ItemTouchHelper.SimpleCallback(0, LEFT or RIGHT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -52,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val item = shopListAdapter.shopList[viewHolder.adapterPosition]
+                val item = shopListAdapter.currentList[viewHolder.adapterPosition]
                 viewModel.deleteShopItem(item)
             }
         }
@@ -73,4 +77,3 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-}
